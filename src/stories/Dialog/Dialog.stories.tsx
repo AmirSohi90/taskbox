@@ -14,10 +14,16 @@ export const Default: Story = {
   render: () => {
     return (
       <Dialog>
-        <Dialog.Trigger>Open</Dialog.Trigger>
+        <Dialog.Trigger>
+          {({ open }) => <button onClick={open}>Open me</button>}
+        </Dialog.Trigger>
         <Dialog.Content>
-          This is a dialog
-          <Dialog.Close>Close me</Dialog.Close>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            This is a dialog where the content should be dictated by the app
+            <Dialog.Close>
+              {({ close }) => <button onClick={close}>Close me</button>}
+            </Dialog.Close>
+          </div>
         </Dialog.Content>
       </Dialog>
     );

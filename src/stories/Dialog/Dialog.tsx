@@ -17,8 +17,11 @@ type DialogContentProps = Omit<React.ComponentProps<"dialog">, "className"> & {
 };
 
 type DialogTriggerProps = {
-  children?: React.ReactNode;
-  onOpen?: () => void;
+  children?: ({ open }: { open: () => void }) => React.ReactNode;
+};
+
+type DialogCloseProps = {
+  children?: ({ close }: { close: () => void }) => React.ReactNode;
 };
 
 function Dialog({ children }: DialogProps) {
@@ -26,11 +29,10 @@ function Dialog({ children }: DialogProps) {
 
   const open = React.useCallback(() => {
     const el = dialogRef.current;
-    console.log({ dialogRef });
     if (!el) return;
-    console.log("Hello");
-    el.showModal();
-  }, [dialogRef]);
+    if (typeof el.open === "boolean" && el.open) return;
+    if ("showModal" in el) el.showModal();
+  }, []);
 
   const close = React.useCallback(() => {
     const el = dialogRef.current;
@@ -69,15 +71,17 @@ Dialog.Content = DialogContent;
 DialogContent.displayName = "Dialog.Content";
 
 function DialogTrigger({ children }: DialogTriggerProps) {
+  if (!children) return null;
   const { open } = useDialogCtx("DialogContent");
-  return <button onClick={open}>{children}</button>;
+  return children({ open });
 }
 Dialog.Trigger = DialogTrigger;
 DialogTrigger.displayName = "Dialog.Trigger";
 
-function DialogClose({ children }: DialogTriggerProps) {
+function DialogClose({ children }: DialogCloseProps) {
+  if (!children) return null;
   const { close } = useDialogCtx("DialogContent");
-  return <button onClick={close}>{children}</button>;
+  return children({ close });
 }
 Dialog.Close = DialogClose;
 DialogClose.displayName = "Dialog.Close";

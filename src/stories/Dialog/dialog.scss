@@ -1,3 +1,10 @@
 .dialog-content {
-  padding: 1rem;
+  padding: 2rem; // var(--dialog-padding-desktop);
+  border: #ededef 1px solid; // var(--dialog-border-colour) var(--dialog-border-width);
+  border-radius: 0.5rem; // var(--dialog-border-radius)
+
+  &::backdrop {
+    background-color: #ffffff; // var(--dialog-backdrop-colour)
+    opacity: 0.8; // var(--dialog-backdrop-opacity)
+  }
 }
