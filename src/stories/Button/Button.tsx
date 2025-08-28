@@ -30,18 +30,16 @@ type ButtonProps = Omit<
   asChild?: boolean;
 } & VariantProps<typeof button>;
 
-export function Button({
-  children,
-  asChild,
-  className,
-  variant,
-  disabled,
-  ...props
-}: ButtonProps) {
-  const Comp = asChild ? Slot : "button";
-  return (
-    <Comp className={clsx(button({ variant, disabled }), className)} {...props}>
-      {children}
-    </Comp>
-  );
-}
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ children, asChild, className, variant, disabled, ...props }) => {
+    const Comp = asChild ? Slot : "button";
+    return (
+      <Comp
+        className={clsx(button({ variant, disabled }), className)}
+        {...props}
+      >
+        {children}
+      </Comp>
+    );
+  }
+);

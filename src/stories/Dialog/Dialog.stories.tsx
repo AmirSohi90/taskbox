@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Dialog } from "./Dialog";
+import { Button } from "../Button/Button";
 
 const meta = {
   title: "Example/Dialog",
@@ -15,13 +16,22 @@ export const Default: Story = {
     return (
       <Dialog>
         <Dialog.Trigger>
-          {({ open }) => <button onClick={open}>Open me</button>}
+          {({ open }) => <Button onClick={open}>Open</Button>}
         </Dialog.Trigger>
         <Dialog.Content>
           <div style={{ display: "flex", flexDirection: "column" }}>
-            This is a dialog where the content should be dictated by the app
+            <div>
+              This is a dialog where the content should be dictated by the app{" "}
+              <Dialog.Close>
+                {({ close }) => <span onClick={close}>X</span>}
+              </Dialog.Close>
+            </div>
             <Dialog.Close>
-              {({ close }) => <button onClick={close}>Close me</button>}
+              {({ close }) => (
+                <Button variant="secondary" onClick={close}>
+                  Close me
+                </Button>
+              )}
             </Dialog.Close>
           </div>
         </Dialog.Content>
