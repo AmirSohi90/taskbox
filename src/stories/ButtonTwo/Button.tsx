@@ -21,26 +21,24 @@ const button = cva("button", {
   },
 });
 
-type ButtonProps = Omit<
+type ButtonProps<T extends React.ElementType> = Omit<
   React.ComponentProps<"button">,
   "className" | "disabled"
 > & {
   className?: string;
   children: React.ReactNode;
-  asChild?: boolean;
-} & VariantProps<typeof button>;
+  as?: T;
+} & Omit<React.ComponentProps<T>, "as" | "className" | "disabled"> &
+  VariantProps<typeof button>;
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ children, asChild, className, variant, disabled, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button";
-    return (
-      <Comp
-        ref={ref}
-        className={clsx(button({ variant, disabled }), className)}
-        {...props}
-      >
-        {children}
-      </Comp>
-    );
-  }
-);
+export const Button = React.forwardRef<
+  HTMLElement,
+  ButtonProps<React.ElementType>
+>(({ children, as, className, variant, disabled, ...props }) => {
+  const Comp = as ?? "button";
+  return (
+    <Comp className={clsx(button({ variant, disabled }), className)} {...props}>
+      {children}
+    </Comp>
+  );
+});
