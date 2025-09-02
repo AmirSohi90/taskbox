@@ -1,61 +1,36 @@
 import React from "react";
-import { TooltipContext, useTooltipCtx } from "./TooltipContext";
-import { Slot } from "../../Slot";
 import clsx from "clsx";
+import { cva, VariantProps } from "class-variance-authority";
+import "./tooltip.scss";
 
-type TooltipProps = {
-  children: React.ReactNode;
-};
-
-type TooltipTriggerProps = Omit<React.ComponentProps<"div">, "className"> & {
-  children: React.ReactNode;
-  className?: string;
-  asChild?: boolean;
-};
-
-type TooltipContentProps = Omit<React.ComponentProps<"div">, "className"> & {
-  children: React.ReactNode;
-  className?: string;
-  asChild?: boolean;
-};
-
-function Tooltip({ children }: TooltipProps) {
-  return (
-    <TooltipContext.Provider value={{}}>{children}</TooltipContext.Provider>
-  );
-}
-
-const TooltipTrigger = React.forwardRef<
-  HTMLDivElement | null,
-  TooltipTriggerProps
->(({ children, className, asChild = false, ...props }, ref) => {
-  useTooltipCtx("TooltipTrigger");
-  const Comp = asChild ? Slot : "div";
-  return (
-    <Comp ref={ref} className={clsx("tooltip-trigger", className)} {...props}>
-      {children}
-    </Comp>
-  );
+const tooltip = cva("tooltip", {
+  variants: {
+    position: {
+      top: "tooltip--position--top",
+      bottom: "tooltip--position--bottom",
+      left: "tooltip--position--left",
+      right: "tooltip--position--right",
+    },
+  },
+  defaultVariants: {
+    position: "top",
+  },
 });
 
-Tooltip.Trigger = TooltipTrigger;
-TooltipTrigger.displayName = "Tooltip.Trigger";
+type TooltipProps = Omit<React.ComponentProps<"span">, "className"> & {
+  children: React.ReactNode;
+  className?: string;
+} & VariantProps<typeof tooltip>;
 
-const TooltipContent = React.forwardRef<
-  HTMLDivElement | null,
-  TooltipContentProps
->(({ children, className, asChild = false, ...props }, ref) => {
-  useTooltipCtx("TooltipContent");
-  const Comp = asChild ? Slot : "div";
-  return (
-    <Comp ref={ref} className={clsx("tooltip-content", className)} {...props}>
-      {children}
-    </Comp>
-  );
-});
-
-Tooltip.Content = TooltipContent;
-TooltipContent.displayName = "Tooltip.Content";
+const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
+  ({ children, className, position }, ref) => {
+    return (
+      <div className={clsx(tooltip({ position }), className)} ref={ref}>
+        {children}
+      </div>
+    );
+  }
+);
 
 export { Tooltip };
-export type { TooltipProps, TooltipTriggerProps };
+export type { TooltipProps };

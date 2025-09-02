@@ -1,0 +1,110 @@
+$tooltip-bg: #ffffff;
+$tooltip-border: #ededef;
+$tooltip-shadow: 0px 1px 4px 0px rgba(12, 12, 13, 0.05);
+$arrow: 8px; // arrow size
+
+.tooltip {
+  position: absolute;
+  display: inline-flex;
+  padding: 0.5rem 0.75rem;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 0.5rem;
+  border: 1px solid $tooltip-border;
+  background-color: $tooltip-bg;
+  box-shadow: $tooltip-shadow;
+
+  /* build the arrow with two pseudo-elements */
+  &::after,
+  &::before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+
+  /* ----- TOP (tooltip above target => arrow points down, sits on bottom edge) ----- */
+  &.tooltip--position--top {
+    &::after {
+      bottom: -($arrow - 1px); /* overlap by 1px */
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: $arrow solid transparent;
+      border-right: $arrow solid transparent;
+      border-top: $arrow solid $tooltip-bg; /* pointing down */
+      filter: drop-shadow($tooltip-shadow);
+    }
+    &::before {
+      bottom: -$arrow - 0.5px; /* 1px farther to show border */
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: $arrow solid transparent;
+      border-right: $arrow solid transparent;
+      border-top: $arrow solid $tooltip-border;
+    }
+  }
+
+  /* ----- BOTTOM (tooltip below target => arrow points up, sits on top edge) ----- */
+  &.tooltip--position--bottom {
+    &::after {
+      top: -($arrow - 1px);
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: $arrow solid transparent;
+      border-right: $arrow solid transparent;
+      border-bottom: $arrow solid $tooltip-bg; /* pointing up */
+      filter: drop-shadow($tooltip-shadow);
+    }
+    &::before {
+      top: -$arrow - 0.5px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: $arrow solid transparent;
+      border-right: $arrow solid transparent;
+      border-bottom: $arrow solid $tooltip-border;
+    }
+  }
+
+  /* ----- LEFT (tooltip left of target => arrow points right, sits on right edge) ----- */
+  &.tooltip--position--left {
+    &::after {
+      right: -($arrow - 1px);
+      top: 50%;
+      transform: translateY(-50%);
+      border-top: $arrow solid transparent;
+      border-bottom: $arrow solid transparent;
+      border-left: $arrow solid $tooltip-bg; /* pointing right */
+      filter: drop-shadow($tooltip-shadow);
+    }
+    &::before {
+      right: -$arrow - 0.5px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-top: $arrow solid transparent;
+      border-bottom: $arrow solid transparent;
+      border-left: $arrow solid $tooltip-border;
+    }
+  }
+
+  /* ----- RIGHT (tooltip right of target => arrow points left, sits on left edge) ----- */
+  &.tooltip--position--right {
+    &::after {
+      left: -($arrow - 1px);
+      top: 50%;
+      transform: translateY(-50%);
+      border-top: $arrow solid transparent;
+      border-bottom: $arrow solid transparent;
+      border-right: $arrow solid $tooltip-bg; /* pointing left */
+      filter: drop-shadow($tooltip-shadow);
+    }
+    &::before {
+      left: -$arrow - 0.5px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-top: $arrow solid transparent;
+      border-bottom: $arrow solid transparent;
+      border-right: $arrow solid $tooltip-border;
+    }
+  }
+}
